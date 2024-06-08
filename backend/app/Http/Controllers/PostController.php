@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PostCreateRequest;
 use App\Models\Post;
-use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -21,7 +20,7 @@ class PostController extends Controller
     public function index(): JsonResponse
     {
         try {
-            $data = Post::where('user_id', \request()->user()->id)->get(['id', 'title', 'content', 'created_at as published_date']);
+            $data = Post::where('user_id', \request()->user()->id)->get(['id', 'title', 'content', 'created_at as creation_date']);
 
             return response()->json([
                 'data' => $data
