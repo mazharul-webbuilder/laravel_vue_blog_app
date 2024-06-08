@@ -7,7 +7,7 @@
         setup your database from .env file.
         run php artisan migrate,
         after that run php artisan serve. Nice your backend is ready.</li>
-    <li>Now, Go to frontend folder run command npm install. after that run npm run dev. Boombs your frontend is ready too.
+    <li>Now, Go to frontend folder run command npm install. after that run npm run dev. Boo, your frontend is ready too.
     open the link that you found on your terminal.</li> 
 </ul>
 <p><strong>Technologies Used</strong></p>
