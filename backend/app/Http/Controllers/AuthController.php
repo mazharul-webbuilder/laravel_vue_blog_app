@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
 {
@@ -39,8 +41,19 @@ class AuthController extends Controller
     /**
      * Logout
     */
-    public function logout()
+    public function logout(Request $request): JsonResponse
     {
+        try {
+            $request->user()->tokens()->delete();
 
+            return response()->json([
+                'message' => 'Logout successfully'
+            ]);
+
+        } catch (Exception $exception){
+            return response()->json([
+                'message' => $exception->getMessage(),
+            ]);
+        }
     }
 }
