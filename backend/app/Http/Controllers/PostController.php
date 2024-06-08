@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PostCreateRequest;
-use App\Http\Requests\PostUpdateRequest;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -12,6 +11,7 @@ use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class PostController extends Controller
 {
@@ -96,6 +96,10 @@ class PostController extends Controller
         } catch (ModelNotFoundException $exception){
             return response()->json([
                 'message' => $exception->getMessage(),
+            ]);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
             ]);
         }
 

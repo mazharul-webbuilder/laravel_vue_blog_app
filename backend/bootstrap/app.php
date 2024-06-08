@@ -15,5 +15,9 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        $exceptions->render(function (\Symfony\Component\Routing\Exception\RouteNotFoundException $exception){
+           return response()->json([
+               'message' => 'User is not Authenticated'
+           ]);
+        });
     })->create();
