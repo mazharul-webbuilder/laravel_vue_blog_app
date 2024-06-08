@@ -21,7 +21,7 @@ class PostController extends Controller
     public function index(): JsonResponse
     {
         try {
-            $data = Post::all();
+            $data = Post::where('user_id', \request()->user()->id)->get(['id', 'title', 'content', 'created_at as published_date']);
 
             return response()->json([
                 'data' => $data
@@ -41,7 +41,7 @@ class PostController extends Controller
     {
         try {
             $data = $request->validated();
-            $data['user_id'] = auth()->check() ? auth()->guard('api')->id() : User::all()->random()->id;
+            $data['user_id'] = $request->user()->id;
 
             $post = Post::create($data);
 
@@ -89,6 +89,11 @@ class PostController extends Controller
         }
         try {
             $post = Post::findOrFail($id);
+            if ($post->user_id != $request->user()->id){
+                return response()->json([
+                    'message' => 'Invalid Action'
+                ]);
+            }
             $post->update($validator->validated());
             return response()->json([
                 'data' => $post
