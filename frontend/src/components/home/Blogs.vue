@@ -1,18 +1,38 @@
 <template>
   <div class="mt-4">
     <h6>Blogs</h6>
-    <div class="py-2">
+    <div class="py-2" v-for="blog in blogs" :key="blog.id" v-if="blogs">
       <div class="d-flex justify-content-between">
-        <p><strong>Blog Title</strong></p>
+        <p><strong>{{blog.title}}</strong></p>
         <button type="button" class="btn btn-secondary">Edit</button>
       </div>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab accusamus, aspernatur at atque corporis cum cumque eaque eius eos excepturi exercitationem facere harum inventore itaque laborum maiores minima mollitia nobis nulla officiis optio pariatur qui quia quo recusandae reprehenderit soluta sunt tempora temporibus totam velit veniam vitae voluptate. Itaque, repellendus.</p>
+      <p>{{blog.content}}</p>
+    </div>
+    <div class="" v-else>
+      <p class="text-center">You have no blogs to show.</p>
     </div>
   </div>
 </template>
 <script>
+import axios from "@/axios.js";
+
 export default {
   name: 'Blogs',
+  data(){
+    return{
+      blogs: ''
+    }
+  },
+  mounted() {
+    this.getBlogs()
+  },
+  methods: {
+    getBlogs(){
+      axios.get('/posts').then((res) => {
+        this.blogs = res.data.data
+      })
+    }
+  }
 
 }
 </script>
