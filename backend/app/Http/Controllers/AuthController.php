@@ -47,7 +47,8 @@ class AuthController extends Controller
             $request->user()->tokens()->delete();
 
             return response()->json([
-                'message' => 'Logout successfully'
+                'message' => 'Logout successfully',
+                'out' => true,
             ]);
 
         } catch (Exception $exception){

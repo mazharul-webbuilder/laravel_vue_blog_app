@@ -31,12 +31,31 @@
         <form class="d-flex">
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
           <button class="btn btn-outline-success" type="submit">Search</button>
+          <button class="btn btn-outline-secondary ms-2" @click.prevent="logout()">Logout</button>
         </form>
       </div>
     </div>
   </nav></template>
 <script>
+import axios from "@/axios.js";
+import {mapActions} from "pinia";
+import {useAuthStore} from "@/stores/AuthStore.js";
+import router from "@/router/index.js";
+
 export default {
-  name: 'AppHeader'
+  name: 'AppHeader',
+  methods: {
+    ...mapActions(useAuthStore,{
+      removeAccessToken: "removeAccessToken"
+    }),
+    logout(){
+      axios.post('/logout').then( (res) => {
+        if (res.data.out){
+          this.removeAccessToken()
+          router.push('/login')
+        }
+      })
+    }
+  }
 }
 </script>
