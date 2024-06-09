@@ -23,7 +23,7 @@ class AuthController extends Controller
             } else{
                 return response()->json([
                    'message'=> 'Credential not matched'
-                ]);
+                ], 401);
             }
 
             return response()->json([
