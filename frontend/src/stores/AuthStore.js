@@ -7,7 +7,9 @@ export const useAuthStore = defineStore('auth', {
     }),
     getters: {
         isAuthenticated(){
+            this.accessToken = localStorage.getItem('accessToken')
 
+            return !!this.accessToken
         }
     },
     actions: {
