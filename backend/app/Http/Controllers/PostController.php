@@ -20,7 +20,7 @@ class PostController extends Controller
     public function index(): JsonResponse
     {
         try {
-            $data = Post::where('user_id', \request()->user()->id)->get(['id', 'title', 'content', 'created_at as creation_date']);
+            $data = Post::where('user_id', \request()->user()->id)->orderBy('id', 'DESC')->get(['id', 'title', 'content', 'created_at as creation_date']);
 
             return response()->json([
                 'data' => $data

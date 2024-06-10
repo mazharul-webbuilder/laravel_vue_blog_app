@@ -3,10 +3,13 @@
     <h5>Create | Edit  Blog</h5>
     <div class="">
       <div class="">
+        <p v-if="error.title" class="text-danger">{{error.title}} dfasd</p>
         <input type="text" placeholder="Enter Blog Title" class="form-control w-full" v-model="model.blog.title">
       </div>
       <div class="mt-3">
+        <p v-if="error.content" class="text-danger">{{error.content}} dafasd</p>
         <textarea class="form-control" placeholder="Enter Blog content" v-model="model.blog.content"></textarea>
+
       </div>
       <div class="flex justify-content-evenly float-end">
         <button class="btn btn-success mt-3" @click.prevent="storeOrUpdateBlog(model.blog.id)">Save</button>
@@ -43,6 +46,10 @@ export default {
           title: '',
           content: ''
         }
+      },
+      error:{
+        title: '',
+        content: ''
       }
     }
   },
@@ -67,10 +74,36 @@ export default {
     },
     storeOrUpdateBlog(blogId){
       if (blogId){
-
+        axios.post(`/posts/${blogId}`, this.model.blog)
+            .then((res) => {
+              this.makeFormEmpty()
+            })
+            .catch((error) => {
+            })
       } else {
-
+        this.error.title = ''
+        this.error.content = ''
+        axios.post('/posts', this.model.blog)
+            .then((res) => {
+              this.makeFormEmpty()
+              this.getBlogs()
+            })
+            .catch((error) => {
+              if(error.response.status === 422){
+                if (error.response.data.errors.title){
+                  this.error.title = error.response.data.errors.title[0]
+                }
+                if (error.response.data.errors.content){
+                  this.error.content = error.response.data.errors.content[0]
+                }
+              }
+            })
       }
+    },
+    makeFormEmpty(){
+      this.model.blog.title = ''
+      this.model.blog.content = ''
+      this.model.blog.id = ''
     }
   }
 
