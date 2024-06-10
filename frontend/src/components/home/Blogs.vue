@@ -1,5 +1,19 @@
 <template>
   <div class="mt-4">
+    <h5>Create | Edit  Blog</h5>
+    <div class="">
+      <div class="">
+        <input type="text" placeholder="Enter Blog Title" class="form-control w-full" v-model="model.blog.title">
+      </div>
+      <div class="mt-3">
+        <textarea class="form-control" placeholder="Enter Blog content" v-model="model.blog.content"></textarea>
+      </div>
+      <div class="flex justify-content-evenly float-end">
+        <button class="btn btn-success mt-3" @click.prevent="storeOrUpdateBlog(model.blog.id)">Save</button>
+      </div>
+    </div>
+  </div>
+  <div class="mt-4">
     <h6>Blogs</h6>
     <div class="py-2" v-for="blog in blogs" :key="blog.id" v-if="blogs">
       <div class="d-flex justify-content-between">
@@ -23,6 +37,13 @@ export default {
   data(){
     return{
       blogs: '',
+      model: {
+        blog:{
+          id: '',
+          title: '',
+          content: ''
+        }
+      }
     }
   },
   mounted() {
@@ -39,8 +60,17 @@ export default {
     },
     editPost(blogId){
       axios.get(`/posts/${blogId}`).then((res) => {
-        this.setBlog(res.data.data.title, res.data.data.content)
+        this.model.blog.id = res.data.data.id
+        this.model.blog.title = res.data.data.title
+        this.model.blog.content = res.data.data.content
       })
+    },
+    storeOrUpdateBlog(blogId){
+      if (blogId){
+
+      } else {
+
+      }
     }
   }
 
