@@ -77,6 +77,8 @@ export default {
     storeOrUpdateBlog(blogId){
       // Update blog
       if (blogId){
+        this.error.title = ''
+        this.error.content = ''
         axios.put(`/posts/${blogId}`, this.model.blog)
             .then((res) => {
               this.getBlogs()

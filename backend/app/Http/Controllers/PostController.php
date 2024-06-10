@@ -82,9 +82,7 @@ class PostController extends Controller
         ]);
 
         if ($validator->fails()){
-            return response()->json([
-                'message' => $validator->messages(),
-            ]);
+            throw new ValidationException($validator);
         }
         try {
             $post = Post::findOrFail($id);
@@ -104,7 +102,7 @@ class PostController extends Controller
         } catch (ValidationException $e) {
             return response()->json([
                 'message' => $e->getMessage(),
-            ]);
+            ], 422);
         }
 
     }
