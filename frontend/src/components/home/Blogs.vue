@@ -3,11 +3,11 @@
     <h5>Create | Edit  Blog</h5>
     <div class="">
       <div class="">
-        <p v-if="error.title" class="text-danger">{{error.title}} dfasd</p>
+        <p v-if="error.title" class="text-danger">{{error.title}}</p>
         <input type="text" placeholder="Enter Blog Title" class="form-control w-full" v-model="model.blog.title">
       </div>
       <div class="mt-3">
-        <p v-if="error.content" class="text-danger">{{error.content}} dafasd</p>
+        <p v-if="error.content" class="text-danger">{{error.content}}</p>
         <textarea class="form-control" placeholder="Enter Blog content" v-model="model.blog.content"></textarea>
 
       </div>
@@ -90,12 +90,7 @@ export default {
             })
             .catch((error) => {
               if(error.response.status === 422){
-                if (error.response.data.errors.title){
-                  this.error.title = error.response.data.errors.title[0]
-                }
-                if (error.response.data.errors.content){
-                  this.error.content = error.response.data.errors.content[0]
-                }
+                this.showErrors(error)
               }
             })
       }
@@ -104,6 +99,14 @@ export default {
       this.model.blog.title = ''
       this.model.blog.content = ''
       this.model.blog.id = ''
+    },
+    showErrors(error){
+      if (error.response.data.errors.title){
+        this.error.title = error.response.data.errors.title[0]
+      }
+      if (error.response.data.errors.content){
+        this.error.content = error.response.data.errors.content[0]
+      }
     }
   }
 
