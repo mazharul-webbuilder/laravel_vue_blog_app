@@ -66,6 +66,8 @@ export default {
       })
     },
     editPost(blogId){
+      this.error.title = ''
+      this.error.content = ''
       axios.get(`/posts/${blogId}`).then((res) => {
         this.model.blog.id = res.data.data.id
         this.model.blog.title = res.data.data.title
@@ -73,14 +75,21 @@ export default {
       })
     },
     storeOrUpdateBlog(blogId){
+      // Update blog
       if (blogId){
-        axios.post(`/posts/${blogId}`, this.model.blog)
+        axios.put(`/posts/${blogId}`, this.model.blog)
             .then((res) => {
+              this.getBlogs()
               this.makeFormEmpty()
             })
             .catch((error) => {
+              if(error.response.status === 422){
+                this.showErrors(error)
+              }
             })
-      } else {
+      }
+      // Store new blog
+      else {
         this.error.title = ''
         this.error.content = ''
         axios.post('/posts', this.model.blog)
