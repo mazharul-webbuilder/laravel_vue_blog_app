@@ -23,7 +23,7 @@ class AuthController extends Controller
             } else{
                 return response()->json([
                    'message'=> 'Credential not matched'
-                ]);
+                ], 401);
             }
 
             return response()->json([
@@ -47,7 +47,8 @@ class AuthController extends Controller
             $request->user()->tokens()->delete();
 
             return response()->json([
-                'message' => 'Logout successfully'
+                'message' => 'Logout successfully',
+                'out' => true,
             ]);
 
         } catch (Exception $exception){
