@@ -78,12 +78,13 @@ export default {
     ...mapActions(useLoaderStore, {
       invertLoader: "invertLoader"
     }),
-    getBlogs(){
+    async getBlogs(){
       axios.get('/posts').then((res) => {
         this.blogs = res.data.data
-        setTimeout(()=>{
-          this.invertLoader()
-        })
+      }).catch((error) => {
+
+      }).finally(() => {
+        this.invertLoader()
       })
     },
     editPost(blogId){

@@ -2,7 +2,7 @@
  <div class="container">
    <app-header></app-header>
    <router-view></router-view>
-   <Loader v-if="loading"></Loader>
+   <p v-if="loading"></p>
    <app-footer v-else></app-footer>
  </div>
 </template>
@@ -26,7 +26,7 @@ export default {
   mounted() {
     setTimeout(() => {
       this.loading = false
-    }, 3000)
+    }, 2000)
   },
   computed:{
 
