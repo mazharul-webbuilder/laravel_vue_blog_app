@@ -25,7 +25,10 @@
     <div class="py-2" v-for="blog in blogs" :key="blog.id" v-if="blogs">
       <div class="d-flex justify-content-between">
         <p><strong>{{blog.title}}</strong></p>
-        <button type="button" class="btn btn-secondary" @click.prevent="editPost(blog.id)">Edit</button>
+        <div class="">
+          <button type="button" class="btn btn-secondary" @click.prevent="editPost(blog.id)">Edit</button>
+          <button type="button" class="btn btn-danger ms-1" @click.prevent="deletePost(blog.id)">Delete</button>
+        </div>
       </div>
       <p>{{blog.content}}</p>
       <p><i>Creation Date {{blog.creation_date}}</i></p>
@@ -79,7 +82,7 @@ export default {
     ...mapActions(useLoaderStore, {
       invertLoader: "invertLoader"
     }),
-    async getBlogs(){
+     getBlogs(){
       axios.get('/posts').then((res) => {
         this.blogs = res.data.data
       }).catch((error) => {
@@ -140,6 +143,15 @@ export default {
       }
       if (error.response.data.errors.content){
         this.error.content = error.response.data.errors.content[0]
+      }
+    },
+    deletePost(blogId){
+      if (confirm('Are you sure, want to delete this blog?')){
+        axios.delete(`posts/${blogId}`).then((res) => {
+          this.getBlogs()
+        }).catch((error) => {
+
+        })
       }
     }
   }
