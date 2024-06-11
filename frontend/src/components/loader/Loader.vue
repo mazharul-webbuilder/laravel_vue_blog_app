@@ -19,7 +19,7 @@ export default {
 }
 .spinner {
   border: 16px solid #f3f3f3;
-  border-top: 16px solid #3498db;
+  border-top: 16px solid #181010;
   border-radius: 50%;
   width: 80px;
   height: 80px;
