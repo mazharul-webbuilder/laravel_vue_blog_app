@@ -28,6 +28,7 @@
         <button type="button" class="btn btn-secondary" @click.prevent="editPost(blog.id)">Edit</button>
       </div>
       <p>{{blog.content}}</p>
+      <p><i>Creation Date {{blog.creation_date}}</i></p>
     </div>
     <div class="" v-else>
       <p class="text-center">You have no blogs to show.</p>
