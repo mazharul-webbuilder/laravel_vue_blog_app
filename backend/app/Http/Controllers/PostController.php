@@ -20,7 +20,7 @@ class PostController extends Controller
     public function index(): JsonResponse
     {
         try {
-            $data = Post::where('user_id', \request()->user()->id)->get(['id', 'title', 'content', 'created_at as creation_date']);
+            $data = Post::where('user_id', \request()->user()->id)->orderBy('id', 'DESC')->get(['id', 'title', 'content', 'created_at as creation_date']);
 
             return response()->json([
                 'data' => $data
@@ -82,9 +82,7 @@ class PostController extends Controller
         ]);
 
         if ($validator->fails()){
-            return response()->json([
-                'message' => $validator->messages(),
-            ]);
+            throw new ValidationException($validator);
         }
         try {
             $post = Post::findOrFail($id);
@@ -104,7 +102,7 @@ class PostController extends Controller
         } catch (ValidationException $e) {
             return response()->json([
                 'message' => $e->getMessage(),
-            ]);
+            ], 422);
         }
 
     }

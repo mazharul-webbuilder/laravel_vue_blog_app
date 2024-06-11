@@ -1,5 +1,22 @@
 <template>
   <div class="mt-4">
+    <h5>Create | Edit  Blog</h5>
+    <div class="">
+      <div class="">
+        <p v-if="error.title" class="text-danger">{{error.title}}</p>
+        <input type="text" placeholder="Enter Blog Title" class="form-control w-full" v-model="model.blog.title">
+      </div>
+      <div class="mt-3">
+        <p v-if="error.content" class="text-danger">{{error.content}}</p>
+        <textarea class="form-control" placeholder="Enter Blog content" v-model="model.blog.content"></textarea>
+
+      </div>
+      <div class="flex justify-content-evenly float-end">
+        <button class="btn btn-success mt-3" @click.prevent="storeOrUpdateBlog(model.blog.id)">Save</button>
+      </div>
+    </div>
+  </div>
+  <div class="mt-4">
     <h6>Blogs</h6>
     <div class="py-2" v-for="blog in blogs" :key="blog.id" v-if="blogs">
       <div class="d-flex justify-content-between">
@@ -23,6 +40,17 @@ export default {
   data(){
     return{
       blogs: '',
+      model: {
+        blog:{
+          id: '',
+          title: '',
+          content: ''
+        }
+      },
+      error:{
+        title: '',
+        content: ''
+      }
     }
   },
   mounted() {
@@ -38,9 +66,58 @@ export default {
       })
     },
     editPost(blogId){
+      this.error.title = ''
+      this.error.content = ''
       axios.get(`/posts/${blogId}`).then((res) => {
-        this.setBlog(res.data.data.title, res.data.data.content)
+        this.model.blog.id = res.data.data.id
+        this.model.blog.title = res.data.data.title
+        this.model.blog.content = res.data.data.content
       })
+    },
+    storeOrUpdateBlog(blogId){
+      // Update blog
+      if (blogId){
+        this.error.title = ''
+        this.error.content = ''
+        axios.put(`/posts/${blogId}`, this.model.blog)
+            .then((res) => {
+              this.getBlogs()
+              this.makeFormEmpty()
+            })
+            .catch((error) => {
+              if(error.response.status === 422){
+                this.showErrors(error)
+              }
+            })
+      }
+      // Store new blog
+      else {
+        this.error.title = ''
+        this.error.content = ''
+        axios.post('/posts', this.model.blog)
+            .then((res) => {
+              this.makeFormEmpty()
+              this.getBlogs()
+            })
+            .catch((error) => {
+              if(error.response.status === 422){
+                this.showErrors(error)
+              }
+            })
+      }
+    },
+    makeFormEmpty(){
+      this.model.blog.title = ''
+      this.model.blog.content = ''
+      this.model.blog.id = ''
+    },
+    showErrors(error){
+      if (error.response.data.errors.title){
+        this.error.title = error.response.data.errors.title[0]
+      }
+      if (error.response.data.errors.content){
+        this.error.content = error.response.data.errors.content[0]
+      }
     }
   }
 

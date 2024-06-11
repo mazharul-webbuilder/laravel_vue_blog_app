@@ -26,4 +26,16 @@ class PostCreateRequest extends FormRequest
             'content' => ['required', 'string', 'min:10'],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'title.required' => 'Blog title is must',
+            'title.min' => 'Title at-latest a three characters word',
+            'content.required' => 'Blog must have content',
+            'content.min' => 'Write content at-least long ten characters'
+
+        ];
+
+    }
 }
