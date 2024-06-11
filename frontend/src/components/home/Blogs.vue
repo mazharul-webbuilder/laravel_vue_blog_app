@@ -16,7 +16,11 @@
       </div>
     </div>
   </div>
-  <div class="mt-4">
+  <!--Blogs section  -->
+  <div class="" v-if="getLoader">
+    <Loader></Loader>
+  </div>
+  <div class="mt-4" v-else>
     <h6>Blogs</h6>
     <div class="py-2" v-for="blog in blogs" :key="blog.id" v-if="blogs">
       <div class="d-flex justify-content-between">
@@ -29,11 +33,14 @@
       <p class="text-center">You have no blogs to show.</p>
     </div>
   </div>
+
 </template>
 <script>
 import axios from "@/axios.js";
-import {mapActions} from "pinia";
+import {mapActions, mapState} from "pinia";
 import {useBlogStore} from "@/stores/BlogStore.js";
+import {useLoaderStore} from "@/stores/LoaderStore.js";
+import Loader from "@/components/loader/Loader.vue";
 
 export default {
   name: 'Blogs',
@@ -53,16 +60,30 @@ export default {
       }
     }
   },
+  components: {
+    Loader
+  },
   mounted() {
     this.getBlogs()
+  },
+  computed: {
+    ...mapState(useLoaderStore, {
+      getLoader: "getLoader"
+    })
   },
   methods: {
     ...mapActions(useBlogStore, {
       setBlog: "setBlog"
     }),
+    ...mapActions(useLoaderStore, {
+      invertLoader: "invertLoader"
+    }),
     getBlogs(){
       axios.get('/posts').then((res) => {
         this.blogs = res.data.data
+        setTimeout(()=>{
+          this.invertLoader()
+        })
       })
     },
     editPost(blogId){
