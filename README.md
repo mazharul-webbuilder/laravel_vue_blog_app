@@ -1,4 +1,10 @@
 <h2>Project Name: Blog Application</h2>
+<p><strong>Project Features:</strong></p>
+<ul>
+    <li>User Login System</li>
+    <li>Authorized User would be access landing page where all blogs lives</li>
+    <li>User can create new blog update existing and also will be able to delete blog </li>
+</ul>
 <p><strong>Project Installation Guide:</strong></p>
 <ul>
     <li>Open Terminal</li>
@@ -17,4 +23,15 @@
     <li>Vue.js 3</li>
     <li>MySQL</li>
 </ul>
+
+<p><strong>Project Brief:</strong></p>
+<p>
+In this application I used VueJs for Frontend and Laravel for Backend, database used
+MySQL. When user try to log in to the system through api data are validating with 
+well manner and in frontend if users make any validation error the message 
+shown perfectly. User will be able to create and edit data in one form which will
+gave them better user experience. In frontend routes are properly protected
+only authenticate user able to access blogs page.
+</p>
+
     
